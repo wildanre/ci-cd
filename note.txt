@@ -1,0 +1,2 @@
+- data barang
+- data sampah
