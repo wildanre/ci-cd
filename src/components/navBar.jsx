@@ -63,7 +63,7 @@ export default function Navbar() {
                 {isMobile ?
                     <> {activeMobNav && <div className='blur' onClick={handleDetail}></div>}
                         <div className='sideNav-mobile' style={activeMobNav ? { maxWidth: '230px' } : { maxWidth: '0px', padding: '0' }}>
-                            <div className='logo' onClick={() => { window.location.reload() }}> <LocalFireDepartmentSharpIcon /> <p>Firea</p></div>
+                            <div className='logo' onClick={() => { window.location.reload() }}> <LocalFireDepartmentSharpIcon /> <p>SAVIOR</p></div>
                             <div className='active-container' style={{ top: `${active * 60 + 80}px` }}><div className='active-mob'></div></div>
                             <ul>
                                 <li className={active === 0 ? 'activeNav' : null} onClick={() => { handleButton(0, '/') }}><HomeRoundedIcon /> <p>&nbsp; Dashboard</p> </li>
@@ -76,7 +76,7 @@ export default function Navbar() {
                             </ul>
                         </div></> :
                     <div className='sideNav' style={showDetail ? { width: '230px' } : { width: '70px' }}>
-                        <div className='logo' onClick={() => { window.location.reload() }}> <LocalFireDepartmentSharpIcon /> {showDetail && <p>Firea</p>}</div>
+                        <div className='logo' onClick={() => { window.location.reload() }}> <LocalFireDepartmentSharpIcon /> {showDetail && <p>SAVIOR</p>}</div>
                         <div className='active-container' style={{ top: `${active * 60 + 80}px` }}><div className='active'></div></div>
                         <ul>
                             <li className={active === 0 ? 'activeNav' : null} onClick={() => { handleButton(0, '/') }}><HomeRoundedIcon /> {showDetail && <p>Dashboard</p>} </li>

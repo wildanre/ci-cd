@@ -5,7 +5,7 @@
 .sideNav-mobile {
     transition: 0.5s all ease;
     height: 100vh;
-    background-color: #9029ff;
+    background-color: #10c82b;
     padding-top: 10px;
     padding-left: 10px;
     position: absolute;
@@ -17,7 +17,7 @@
 .sideNav {
     transition: 0.5s all ease;
     height: 100vh;
-    background-color: #9029ff;
+    background-color: #07b440;
     padding-top: 10px;
     padding-left: 10px;
     position: relative;
@@ -85,12 +85,12 @@
 }
 
 .activeNav p {
-    color: #9029ff;
+    color: #00a748;
     font-weight: 600;
 }
 
 .activeNav svg {
-    color: #9029ff;
+    color: #00aa28;
 } 
 
 .logo {
