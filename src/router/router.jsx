@@ -10,6 +10,8 @@ import UserPage from '../pages/users'
 import BankSampahPage from '../pages/bankSampah'
 import SampahPage from '../pages/sampah'
 import Pelaporan from '../pages/pelaporan'
+import PenukaranPage from '../pages/penukaran'
+import PembayaranPage from '../pages/pembayaran'
 
 const router = createBrowserRouter([
     {
@@ -46,6 +48,14 @@ const router = createBrowserRouter([
             {
                 path: "/pelaporan",
                 element: <Pelaporan />
+            },
+            {
+                path: "/penukaran",
+                element: <PenukaranPage />
+            },
+            {
+                path: "/pembayaran",
+                element: <PembayaranPage />
             },
         ]
     },

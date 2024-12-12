@@ -45,7 +45,7 @@ export default function Navbar() {
         };
         handleResize();
 
-        const route = ['/', '/toko', '/barang', '/users', '/pelaporan', '/history']
+        const route = ['/', '/toko', '/barang', '/users', '/pelaporan', 'penukaran','/pembayaran']
         setActive(route.indexOf(location.pathname))
 
         // Add event listener to update the screen width on resize
@@ -72,7 +72,9 @@ export default function Navbar() {
                                 <li className={active === 3 ? 'activeNav' : null} onClick={() => { handleButton(3, '/users') }}><AccountCircleIcon /> <p>&nbsp; Users</p></li>
                                 <li className={active === 4 ? 'activeNav' : null} onClick={() => { handleButton(4, '/bankSampah') }}><MovingSharpIcon /> {showDetail && <p>Bank Sampah</p>}</li>
                                 <li className={active === 5 ? 'activeNav' : null} onClick={() => { handleButton(5, '/sampah') }}><MovingSharpIcon /> <p>&nbsp; Daftar Sampah</p></li>
-                                <li className={active === 6 ? 'activeNav' : null} onClick={() => { handleButton(6, '/pelaporan') }}><pelaporanSharpIcon /> <p>&nbsp; Pelaporan</p></li>
+                                <li className={active === 6 ? 'activeNav' : null} onClick={() => { handleButton(6, '/pelaporan') }}><HistorySharpIcon /> <p>&nbsp; Pelaporan</p></li>
+                                <li className={active === 7 ? 'activeNav' : null} onClick={() => { handleButton(7, '/penukaran') }}><HistorySharpIcon /> <p>&nbsp; Penukaran</p></li> 
+                                <li className={active === 8 ? 'activeNav' : null} onClick={() => { handleButton(8, '/pembayaran') }}><HistorySharpIcon /> <p>&nbsp; pembayaran</p></li> 
                             </ul>
                         </div></> :
                     <div className='sideNav' style={showDetail ? { width: '230px' } : { width: '70px' }}>
@@ -86,6 +88,8 @@ export default function Navbar() {
                             <li className={active === 4 ? 'activeNav' : null} onClick={() => { handleButton(4, '/bankSampah') }}><MovingSharpIcon /> {showDetail && <p>Bank Sampah</p>}</li>
                             <li className={active === 5 ? 'activeNav' : null} onClick={() => { handleButton(5, '/sampah') }}><MovingSharpIcon /> {showDetail && <p>Daftar Sampah</p>}</li>
                             <li className={active === 6 ? 'activeNav' : null} onClick={() => { handleButton(6, '/pelaporan') }}><HistorySharpIcon /> {showDetail && <p>Pelaporan</p>}</li>
+                            <li className={active === 7 ? 'activeNav' : null} onClick={() => { handleButton(7, '/penukaran') }}><HistorySharpIcon /> {showDetail && <p>Penukaran</p>}</li>
+                            <li className={active === 8 ? 'activeNav' : null} onClick={() => { handleButton(8, '/pembayaran') }}><HistorySharpIcon /> {showDetail && <p>pembayaran</p>}</li>
                         </ul>
                     </div>}
             </div>
