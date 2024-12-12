@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import { ButtonDelete, ButtonCheck, ButtonCancel } from '../components/button';
 function PembayaranPage() {
   const [payments, setPayments] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -11,16 +11,15 @@ function PembayaranPage() {
       setLoading(true);
       try {
         const response = await axios.get(`${import.meta.env.VITE_API_URL}/payment`);
-        // Pastikan response.data adalah array
         if (Array.isArray(response.data)) {
           setPayments(response.data);
         } else {
           console.error('Data pembayaran bukan array:', response.data);
-          setPayments([]); // Menetapkan pembayaran kosong jika data tidak valid
+          setPayments([]);
         }
       } catch (error) {
         console.error('Error fetching payments:', error);
-        setPayments([]); // Menangani error dengan pembayaran kosong
+        setPayments([]);
       } finally {
         setLoading(false);
       }
@@ -30,77 +29,131 @@ function PembayaranPage() {
   }, []);
 
   // Update status pembayaran
-  const handleStatusUpdate = async (id, newStatus, pointsUsed) => {
-    console.log(`Sending PUT request to: ${import.meta.env.VITE_API_URL}/payment/${id}`);
-    console.log(`Data:`, { status: newStatus, pointsUsed });
-
+  const handleStatusUpdate = async (id, newStatus, totalPrice) => {
     if (newStatus === 'cancelled') {
-      alert('Status sudah cancelled, tidak bisa diubah lagi.');
-      return;
+      // Hanya ubah status menjadi cancelled tanpa mengubah poin pengguna
+      try {
+        const response = await axios.put(`${import.meta.env.VITE_API_URL}/payment/${id}`, {
+          status: newStatus,
+          totalPrice,
+        });
+
+        alert('Status pembayaran berhasil diubah menjadi cancelled.');
+        setPayments((prevPayments) =>
+          prevPayments.map((payment) =>
+            payment.id === id ? { ...payment, status: newStatus } : payment
+          )
+        );
+      } catch (error) {
+        console.error('Error updating status:', error);
+      }
+      return; // Menghentikan proses lebih lanjut untuk mengurangi poin jika status adalah cancelled
     }
 
+    // Lakukan update status dan kurangi poin jika statusnya bukan cancelled
     try {
-      const response = await axios.put(`${import.meta.env.VITE_API_URL}/payment/${id}`, { status: newStatus, pointsUsed });
-      console.log('Response:', response); // Log response from server
+      const response = await axios.put(`${import.meta.env.VITE_API_URL}/payment/${id}`, {
+        status: newStatus,
+        totalPrice,
+      });
+
       if (newStatus === 'success') {
-        await axios.put(`${import.meta.env.VITE_API_URL}/user/${response.data.payment.userId}`, {
-          point: response.data.payment.user.point - pointsUsed,
-        });
+        const user = response.data.payment.user;
+        if (user && user.point !== undefined) {
+          // Hanya kurangi poin jika statusnya 'success'
+          await axios.put(`${import.meta.env.VITE_API_URL}/user/${user.id}`, {
+            point: user.point - totalPrice,
+          });
+        } else {
+          console.error('User not found or user points undefined.');
+        }
       }
 
       alert('Status pembayaran berhasil diubah.');
-      setPayments(prevPayments =>
-        prevPayments.map(payment =>
+      setPayments((prevPayments) =>
+        prevPayments.map((payment) =>
           payment.id === id ? { ...payment, status: newStatus } : payment
         )
       );
     } catch (error) {
       console.error('Error updating status:', error);
-      alert('Gagal mengubah status pembayaran.');
+    }
+  };
+
+  // Tambahkan fungsi untuk menghapus pembayaran
+  const handleDeletePayment = async (id) => {
+    if (!window.confirm('Apakah Anda yakin ingin menghapus pembayaran ini?')) {
+      return;
+    }
+
+    try {
+      await axios.delete(`${import.meta.env.VITE_API_URL}/payment/${id}`);
+      alert('Pembayaran berhasil dihapus.');
+      setPayments((prevPayments) => prevPayments.filter((payment) => payment.id !== id));
+    } catch (error) {
+      console.error('Error deleting payment:', error);
+      alert('Gagal menghapus pembayaran.');
     }
   };
 
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div className="text-center py-5">Loading...</div>;
   }
 
   return (
-    <div>
-      <h1>Daftar Pembayaran</h1>
-      <table>
-        <thead>
+    <div className="relative overflow-x-auto shadow-md sm:rounded-lg px-5 py-5">
+      <h1 className="text-2xl font-semibold text-gray-800 mb-5">Daftar Pembayaran</h1>
+      <table className="w-full text-sm text-left text-gray-500">
+        <thead className="text-xs uppercase bg-gray-50 text-gray-700">
           <tr>
-            <th>ID</th>
-            <th>User</th>
-            <th>Status</th>
-            <th>Aksi</th>
+            <th scope="col" className="px-6 py-3">Total harga</th>
+            <th scope="col" className="px-6 py-3">User</th>
+            <th scope="col" className="px-6 py-3">barang</th>
+            <th scope="col" className="px-6 py-3">Status</th>
+            <th scope="col" className="px-6 py-3">Aksi</th>
           </tr>
         </thead>
         <tbody>
           {Array.isArray(payments) && payments.length > 0 ? (
-            payments.map(payment => (
-              <tr key={payment.id}>
-                <td>{payment.id}</td>
-                <td>{payment.user.name}</td>
-                <td>{payment.status}</td>
-                <td>
-                  {payment.status !== 'cancelled' && (
-                    <>
-                      <button onClick={() => handleStatusUpdate(payment.id, 'success', payment.pointsUsed)}>
+            payments.map((payment) => (
+              <tr className="odd:bg-white even:bg-gray-50 border-b" key={payment.id}>
+                <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                  {payment.totalPrice}
+                </td>
+                <td className="px-6 py-4">{payment.user.name}</td>
+                <td className="px-6 py-4">{payment.barang.nama}</td>
+                <td className="px-6 py-4">{payment.status}</td>
+                <td className="px-6 py-4">
+                  {payment.status !== 'cancelled' && payment.status !== 'success' && (
+                    <div className="flex space-x-4 mb-2">
+                      <ButtonCheck
+                        onClick={() => handleStatusUpdate(payment.id, 'success', payment.totalPrice)}
+                        className="text-blue-600 hover:underline"
+                      >
                         Mark as Success
-                      </button>
-                      <button onClick={() => handleStatusUpdate(payment.id, 'cancelled', payment.pointsUsed)}>
+                      </ButtonCheck>
+                      <ButtonCancel
+                        onClick={() => handleStatusUpdate(payment.id, 'cancelled', payment.totalPrice)}
+                        className="text-red-600 hover:underline"
+                      >
                         Mark as Cancelled
-                      </button>
-                    </>
+                      </ButtonCancel>
+                    </div>
+
                   )}
+                  <ButtonDelete
+                    onClick={() => handleDeletePayment(payment.id)}
+                    className="text-red-600 hover:underline ml-4"
+                  >
+                    Hapus
+                  </ButtonDelete>
                 </td>
               </tr>
             ))
           ) : (
             <tr>
-              <td colSpan="4">Tidak ada data pembayaran</td>
+              <td colSpan="4" className="text-center py-4">Tidak ada data pembayaran</td>
             </tr>
           )}
         </tbody>

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { ButtonDelete, ButtonEdit } from '../components/button';
 
 export default function BankSampahPage() {
   const [bankSampah, setBankSampah] = useState([]);
@@ -97,9 +98,8 @@ export default function BankSampahPage() {
       <table className="w-full text-sm text-left rtl:text-right text-gray-500">
         <thead className="text-xs uppercase bg-gray-50">
           <tr>
-            <th scope="col" className="px-6 py-3">Bank Sampah Name</th>
-            <th scope="col" className="px-6 py-3">Location</th>
-            <th scope="col" className="px-6 py-3">Sampah Items</th>
+            <th scope="col" className="px-6 py-3">Nama Bank Sampah</th>
+            <th scope="col" className="px-6 py-3">Lokasi</th>
             <th scope="col" className="px-6 py-3">Actions</th>
           </tr>
         </thead>
@@ -110,36 +110,19 @@ export default function BankSampahPage() {
                 {item.name}
               </th>
               <td className="px-6 py-4">{item.location}</td>
-              <td className="px-6 py-4">
-                {item && item.sampah && item.sampah.map((sampah, index) => (
-                  <div key={index}>
-                    {/* Display object properties if sampah is an object */}
-                    {sampah && typeof sampah === 'object' ? (
-                      <>
-                      </>
-                    ) : (
-                      sampah // If it's not an object, display it as is
-                    )}
-                  </div>
-                ))}
-              </td>
-
-              <td className="px-6 py-4">
-                <button
+              <td className="px-6 py-4 flex flex-row gap-2">
+                <ButtonEdit
                   onClick={() => {
                     setEditingBankSampah(item);
                     setIsDialogOpen(true);
                   }}
-                  className="font-medium text-blue-600 hover:underline"
                 >
                   Edit
-                </button>
-                <button
+                </ButtonEdit>
+                <ButtonDelete
                   onClick={() => handleDelete(item.id)}
-                  className="ml-4 text-red-600 hover:underline"
                 >
-                  Delete
-                </button>
+                </ButtonDelete>
               </td>
             </tr>
           ))

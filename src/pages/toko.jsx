@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { ButtonAdd, ButtonEdit, ButtonDelete } from "../components/button";
 
 export default function TokoPage() {
   const [toko, setToko] = useState([]);
@@ -105,20 +106,16 @@ export default function TokoPage() {
                 />
               </td>
               <td className="px-6 py-4">
-                <button
+                <ButtonEdit
                   onClick={() => {
                     setEditingStore(store);
                     setIsDialogOpen(true);
                   }}
-                  className="font-medium text-blue-600 hover:underline"
                 >
-                  Edit
-                </button>
+                </ButtonEdit>
                 <button
                   onClick={() => handleDelete(store.id)}
-                  className="ml-4 text-red-600 hover:underline"
                 >
-                  Delete
                 </button>
               </td>
             </tr>
@@ -127,7 +124,7 @@ export default function TokoPage() {
       </table>
 
       {/* Button to open the dialog for adding a new store */}
-      <button
+      <ButtonAdd
         onClick={() => {
           setNewStore({
             nama: "",
@@ -140,8 +137,7 @@ export default function TokoPage() {
         }}
         className="mt-6 px-6 py-2 text-white bg-blue-600 rounded hover:bg-blue-700"
       >
-        Add New Store
-      </button>
+      </ButtonAdd>
 
       {/* Dialog for creating or editing store */}
       {isDialogOpen && (

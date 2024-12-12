@@ -4,11 +4,15 @@ import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import LocalFireDepartmentSharpIcon from '@mui/icons-material/LocalFireDepartmentSharp';
 import HistorySharpIcon from '@mui/icons-material/HistorySharp';
-import MovingSharpIcon from '@mui/icons-material/MovingSharp';
 import LogoutSharpIcon from '@mui/icons-material/LogoutSharp';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import ArchiveIcon from '@mui/icons-material/Archive';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import CollectionsBookmarkIcon from '@mui/icons-material/CollectionsBookmark';
+import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
+import ReportIcon from '@mui/icons-material/Report';
+import SwapHorizontalCircleIcon from '@mui/icons-material/SwapHorizontalCircle';
+import PaymentsIcon from '@mui/icons-material/Payments';
 import { useState, useEffect } from 'react';
 import SettingsIcon from '@mui/icons-material/Settings';
 import PersonIcon from '@mui/icons-material/Person';
@@ -70,11 +74,11 @@ export default function Navbar() {
                                 <li className={active === 1 ? 'activeNav' : null} onClick={() => { handleButton(1, '/toko') }}><ShoppingBagIcon /> <p>&nbsp; Toko</p></li>
                                 <li className={active === 2 ? 'activeNav' : null} onClick={() => { handleButton(2, '/barang') }}><ArchiveIcon /> <p>&nbsp; Barang</p></li>
                                 <li className={active === 3 ? 'activeNav' : null} onClick={() => { handleButton(3, '/users') }}><AccountCircleIcon /> <p>&nbsp; Users</p></li>
-                                <li className={active === 4 ? 'activeNav' : null} onClick={() => { handleButton(4, '/bankSampah') }}><MovingSharpIcon /> {showDetail && <p>Bank Sampah</p>}</li>
-                                <li className={active === 5 ? 'activeNav' : null} onClick={() => { handleButton(5, '/sampah') }}><MovingSharpIcon /> <p>&nbsp; Daftar Sampah</p></li>
-                                <li className={active === 6 ? 'activeNav' : null} onClick={() => { handleButton(6, '/pelaporan') }}><HistorySharpIcon /> <p>&nbsp; Pelaporan</p></li>
-                                <li className={active === 7 ? 'activeNav' : null} onClick={() => { handleButton(7, '/penukaran') }}><HistorySharpIcon /> <p>&nbsp; Penukaran</p></li> 
-                                <li className={active === 8 ? 'activeNav' : null} onClick={() => { handleButton(8, '/pembayaran') }}><HistorySharpIcon /> <p>&nbsp; pembayaran</p></li> 
+                                <li className={active === 4 ? 'activeNav' : null} onClick={() => { handleButton(4, '/bankSampah') }}><CollectionsBookmarkIcon /> {showDetail && <p>Bank Sampah</p>}</li>
+                                <li className={active === 5 ? 'activeNav' : null} onClick={() => { handleButton(5, '/sampah') }}><DeleteSweepIcon /> <p>&nbsp; Daftar Sampah</p></li>
+                                <li className={active === 6 ? 'activeNav' : null} onClick={() => { handleButton(6, '/pelaporan') }}><ReportIcon /> <p>&nbsp; Pelaporan</p></li>
+                                <li className={active === 7 ? 'activeNav' : null} onClick={() => { handleButton(7, '/penukaran') }}><SwapHorizontalCircleIcon /> <p>&nbsp; Penukaran</p></li> 
+                                <li className={active === 8 ? 'activeNav' : null} onClick={() => { handleButton(8, '/pembayaran') }}><PaymentsIcon /> <p>&nbsp; pembayaran</p></li> 
                             </ul>
                         </div></> :
                     <div className='sideNav' style={showDetail ? { width: '230px' } : { width: '70px' }}>
@@ -85,11 +89,11 @@ export default function Navbar() {
                             <li className={active === 1 ? 'activeNav' : null} onClick={() => { handleButton(1, '/toko') }}><ShoppingBagIcon /> {showDetail && <p>Toko</p>}</li>
                             <li className={active === 2 ? 'activeNav' : null} onClick={() => { handleButton(2, '/barang') }}><ArchiveIcon /> {showDetail && <p>Barang</p>}</li>
                             <li className={active === 3 ? 'activeNav' : null} onClick={() => { handleButton(3, '/users') }}><AccountCircleIcon /> {showDetail && <p>User</p>}</li>
-                            <li className={active === 4 ? 'activeNav' : null} onClick={() => { handleButton(4, '/bankSampah') }}><MovingSharpIcon /> {showDetail && <p>Bank Sampah</p>}</li>
-                            <li className={active === 5 ? 'activeNav' : null} onClick={() => { handleButton(5, '/sampah') }}><MovingSharpIcon /> {showDetail && <p>Daftar Sampah</p>}</li>
-                            <li className={active === 6 ? 'activeNav' : null} onClick={() => { handleButton(6, '/pelaporan') }}><HistorySharpIcon /> {showDetail && <p>Pelaporan</p>}</li>
-                            <li className={active === 7 ? 'activeNav' : null} onClick={() => { handleButton(7, '/penukaran') }}><HistorySharpIcon /> {showDetail && <p>Penukaran</p>}</li>
-                            <li className={active === 8 ? 'activeNav' : null} onClick={() => { handleButton(8, '/pembayaran') }}><HistorySharpIcon /> {showDetail && <p>pembayaran</p>}</li>
+                            <li className={active === 4 ? 'activeNav' : null} onClick={() => { handleButton(4, '/bankSampah') }}><CollectionsBookmarkIcon /> {showDetail && <p>Bank Sampah</p>}</li>
+                            <li className={active === 5 ? 'activeNav' : null} onClick={() => { handleButton(5, '/sampah') }}><DeleteSweepIcon /> {showDetail && <p>Daftar Sampah</p>}</li>
+                            <li className={active === 6 ? 'activeNav' : null} onClick={() => { handleButton(6, '/pelaporan') }}><ReportIcon /> {showDetail && <p>Pelaporan</p>}</li>
+                            <li className={active === 7 ? 'activeNav' : null} onClick={() => { handleButton(7, '/penukaran') }}><SwapHorizontalCircleIcon /> {showDetail && <p>Penukaran</p>}</li>
+                            <li className={active === 8 ? 'activeNav' : null} onClick={() => { handleButton(8, '/pembayaran') }}><PaymentsIcon /> {showDetail && <p>pembayaran</p>}</li>
                         </ul>
                     </div>}
             </div>

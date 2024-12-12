@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { ButtonAdd, ButtonDelete, ButtonEdit } from '../components/button';
 
 export default function SampahPage() {
   const [sampah, setSampah] = useState([]);
@@ -9,12 +10,20 @@ export default function SampahPage() {
   });
   const [editingSampah, setEditingSampah] = useState(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [bankSampah, setBankSampah] = useState([]); // State untuk data Bank Sampah
 
   // Fetch sampah from the API
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL}/sampah`)
       .then((response) => response.json())
       .then((data) => setSampah(data));
+  }, []);
+
+  // Fetch bank sampah from the API
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_API_URL}/bank-sampah`)
+      .then((response) => response.json())
+      .then((data) => setBankSampah(data)); // Menyimpan data bank sampah
   }, []);
 
   // Create new sampah
@@ -76,8 +85,8 @@ export default function SampahPage() {
       <table className="w-full text-sm text-left rtl:text-right text-gray-500">
         <thead className="text-xs uppercase bg-gray-50">
           <tr>
-            <th scope="col" className="px-6 py-3">Category</th>
-            <th scope="col" className="px-6 py-3">Price</th>
+            <th scope="col" className="px-6 py-3">Kategori</th>
+            <th scope="col" className="px-6 py-3">harga</th>
             <th scope="col" className="px-6 py-3">Bank Sampah</th>
             <th scope="col" className="px-6 py-3">Actions</th>
           </tr>
@@ -89,23 +98,17 @@ export default function SampahPage() {
                 {item.category}
               </th>
               <td className="px-6 py-4">{item.price}</td>
-              <td className="px-6 py-4">{item.bankSampahId}</td>
-              <td className="px-6 py-4">
-                <button
+              <td className="px-6 py-4">{item.bankSampah.name}</td>
+              <td className="px-6 py-4 flex flex-row gap-2">
+                <ButtonEdit
                   onClick={() => {
                     setEditingSampah(item);
                     setIsDialogOpen(true);
                   }}
-                  className="font-medium text-blue-600 hover:underline"
-                >
-                  Edit
-                </button>
-                <button
+                />
+                <ButtonDelete
                   onClick={() => handleDelete(item.id)}
-                  className="ml-4 text-red-600 hover:underline"
-                >
-                  Delete
-                </button>
+                />
               </td>
             </tr>
           ))}
@@ -113,7 +116,7 @@ export default function SampahPage() {
       </table>
 
       {/* Button to open the dialog for adding a new sampah */}
-      <button
+      <ButtonAdd
         onClick={() => {
           setNewSampah({
             category: "",
@@ -125,8 +128,8 @@ export default function SampahPage() {
         }}
         className="mt-6 px-6 py-2 text-white bg-blue-600 rounded hover:bg-blue-700"
       >
-        Add New Sampah
-      </button>
+        
+      </ButtonAdd>
 
       {/* Dialog for creating or editing sampah */}
       {isDialogOpen && (
@@ -167,9 +170,8 @@ export default function SampahPage() {
                 />
               </div>
               <div className="mb-4">
-                <label className="block text-gray-700">Bank Sampah ID</label>
-                <input
-                  type="text"
+                <label className="block text-gray-700">Nama Bank Sampah</label>
+                <select
                   value={editingSampah ? editingSampah.bankSampahId : newSampah.bankSampahId}
                   onChange={(e) => {
                     if (editingSampah) {
@@ -179,7 +181,16 @@ export default function SampahPage() {
                     }
                   }}
                   className="mt-1 px-4 py-2 border rounded"
-                />
+                >
+                  <option value="" className="block text-gray-700">
+                    Pilih Bank Sampah
+                  </option>
+                  {bankSampah.map((bank) => (
+                    <option key={bank.id} value={bank.id}>
+                      {bank.name}
+                    </option>
+                  ))}
+                </select>
               </div>
               <button
                 type="submit"
