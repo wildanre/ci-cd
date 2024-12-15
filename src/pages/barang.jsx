@@ -11,7 +11,7 @@ export default function BarangPage() {
     harga: 0,
     stok: 0,
     tokoId: '',
-    imageUrl: '', // image URL from Cloudinary
+    imageUrl: '',
   });
   const [editingItem, setEditingItem] = useState(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -42,8 +42,8 @@ export default function BarangPage() {
     if (file) {
       const formData = new FormData();
       formData.append('file', file);
-      formData.append('upload_preset', 'upload_barang'); // Ganti dengan preset Cloudinary Anda
-      formData.append('cloud_name', 'dzev0az08'); // Ganti dengan cloud name Cloudinary Anda
+      formData.append('upload_preset', 'upload_barang'); 
+      formData.append('cloud_name', 'dzev0az08');
 
       try {
         const response = await axios.post(
@@ -53,7 +53,7 @@ export default function BarangPage() {
         );
         setNewItem((prevState) => ({
           ...prevState,
-          imageUrl: response.data.secure_url, // Menyimpan URL Cloudinary
+          imageUrl: response.data.secure_url,
         }));
       } catch (error) {
         console.error('Error uploading image:', error);
@@ -61,7 +61,6 @@ export default function BarangPage() {
     }
   };
 
-  // Create or update item logic (same as before, but use imageUrl from Cloudinary)
   const handleCreate = (e) => {
     e.preventDefault();
 
@@ -71,7 +70,6 @@ export default function BarangPage() {
       stok: parseInt(newItem.stok),
     };
 
-    // Fetch toko data to include in the new item
     const toko = tokoList.find((toko) => toko.id === newItem.tokoId);
 
     const newItemWithToko = {
@@ -97,7 +95,7 @@ export default function BarangPage() {
             item.id === newItemWithToko.id ? data : item
           )
         );
-        Swal.fire('Success', 'Item added successfully!', 'success');
+        Swal.fire('Success', 'Produk berhasil ditambahkan!', 'success');
         setNewItem({
           nama: '',
           harga: 0,
@@ -108,11 +106,11 @@ export default function BarangPage() {
         setIsDialogOpen(false);
       })
       .catch((error) => {
-        console.error('Error adding item:', error);
+        console.error('Gagal menambahkan produk:', error);
         setBarang((prevBarang) =>
           prevBarang.filter((item) => item.id !== newItemWithToko.id)
         );
-        Swal.fire('Error', 'Failed to add item.', 'error');
+        Swal.fire('Error', 'Gagal menambahkan produk.', 'error');
       });
   };
 
@@ -145,13 +143,13 @@ export default function BarangPage() {
         setBarang((prevBarang) =>
           prevBarang.map((item) => (item.id === data.id ? data : item))
         );
-        Swal.fire('Success', 'Item updated successfully!', 'success');
+        Swal.fire('Success', 'Nerhasil diperbarui!', 'success');
         setEditingItem(null);
         setIsDialogOpen(false);
       })
       .catch((error) => {
-        console.error('Error updating item:', error);
-        Swal.fire('Error', 'Failed to update item.', 'error');
+        console.error('Gagal memperbarui produk:', error);
+        Swal.fire('Error', 'Gagal Memperbarui produk.', 'error');
         // Rollback
         setBarang((prevBarang) =>
           prevBarang.map((item) =>
@@ -161,16 +159,15 @@ export default function BarangPage() {
       });
   };
 
-  // Delete item
   const handleDelete = (id) => {
     Swal.fire({
-      title: 'Are you sure?',
-      text: 'You will not be able to recover this item!',
+      title: 'Anda yakin?',
+      text: 'Produk yang dihapus tidak bisa dipulihkan',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!',
+      confirmButtonText: 'Hapus!',
     }).then((result) => {
       if (result.isConfirmed) {
         fetch(`${import.meta.env.VITE_API_URL}/barang/${id}`, {
@@ -178,31 +175,29 @@ export default function BarangPage() {
         })
           .then(() => {
             setBarang(barang.filter((item) => item.id !== id));
-            Swal.fire('Deleted!', 'Your item has been deleted.', 'success');
+            Swal.fire('Deleted!', 'Produk berhasil dihapus', 'success');
           })
           .catch((error) => {
-            console.error('Error deleting item:', error);
-            Swal.fire('Error', 'Failed to delete item.', 'error');
+            console.error('Error menghapus produk:', error);
+            Swal.fire('Error', 'Gagal menghapus produk.', 'error');
           });
       }
     });
   };
   
-  // Form dialog for creating or editing an item
   return (
     <div className='relative overflow-x-auto shadow-md sm:rounded-lg px-5 py-5'>
-      {/* Table rendering barang */}
       <table className='w-full text-sm text-left rtl:text-right text-gray-500'>
         <thead className='text-xs uppercase bg-gray-50'>
           <tr>
             <th scope='col' className='px-6 py-3'>
-              Item Name
+              Nama Produk
             </th>
             <th scope='col' className='px-6 py-3'>
-              Price
+              harga
             </th>
             <th scope='col' className='px-6 py-3'>
-              Stock
+              Stok
             </th>
             <th scope='col' className='px-6 py-3'>
               Nama Toko
@@ -211,7 +206,7 @@ export default function BarangPage() {
               Gambar
             </th>
             <th scope='col' className='px-6 py-3'>
-              Actions
+              Aksi
             </th>
           </tr>
         </thead>
@@ -269,11 +264,11 @@ export default function BarangPage() {
         <div className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50'>
           <div className='bg-white p-6 rounded-lg shadow-lg w-96'>
             <h3 className='text-xl font-semibold mb-4'>
-              {editingItem ? 'Edit Item' : 'Add New Item'}
+              {editingItem ? 'Edit Produk' : 'Tambah produk baru'}
             </h3>
             <form onSubmit={editingItem ? handleUpdate : handleCreate}>
               <div className='mb-4'>
-                <label className='block text-gray-700'>Item Name</label>
+                <label className='block text-gray-700'>Nama</label>
                 <input
                   type='text'
                   value={editingItem ? editingItem.nama : newItem.nama}
@@ -335,7 +330,7 @@ export default function BarangPage() {
                   }}
                   className='mt-1 px-4 py-2 border rounded'
                 >
-                  <option value=''>Select Toko</option>
+                  <option value=''>Pilih Toko</option>
                   {tokoList.map((toko) => (
                     <option key={toko.id} value={toko.id}>
                       {toko.nama}
@@ -344,7 +339,7 @@ export default function BarangPage() {
                 </select>
               </div>
               <div className='mb-4'>
-                <label className='block text-gray-700'>Upload Image</label>
+                <label className='block text-gray-700'>Upload Gambar</label>
                 <input
                   type='file'
                   onChange={handleImageUpload}
@@ -372,7 +367,7 @@ export default function BarangPage() {
                   type='submit'
                   className='bg-blue-500 text-white py-2 px-4 rounded'
                 >
-                  {editingItem ? 'Update Item' : 'Add Item'}
+                  {editingItem ? 'Update' : 'Tambah'}
                 </button>
               </div>
             </form>

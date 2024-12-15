@@ -1,5 +1,6 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
-import { ButtonDelete, ButtonEdit } from '../components/button';
+import { ButtonAdd, ButtonDelete, ButtonEdit } from '../components/button';
 
 export default function BankSampahPage() {
   const [bankSampah, setBankSampah] = useState([]);
@@ -19,7 +20,6 @@ export default function BankSampahPage() {
       .catch((error) => console.error("Error fetching data:", error));
   }, []);
 
-  // Create new Bank Sampah
   const handleCreate = (e) => {
     e.preventDefault();
 
@@ -62,7 +62,6 @@ export default function BankSampahPage() {
       .catch((error) => console.error("Error updating data:", error));
   };
 
-  // Delete Bank Sampah
   const handleDelete = (id) => {
     fetch(`${import.meta.env.VITE_API_URL}/bank-sampah/${id}`, {
       method: "DELETE",
@@ -73,7 +72,6 @@ export default function BankSampahPage() {
       .catch((error) => console.error("Error deleting data:", error));
   };
 
-  // Handle input changes
   const handleInputChange = (e, field) => {
     const value = e.target.value;
     if (editingBankSampah) {
@@ -83,7 +81,6 @@ export default function BankSampahPage() {
     }
   };
 
-  // Handle sampah items change (splitting comma-separated input)
   const handleSampahChange = (e) => {
     const sampahList = e.target.value.split(",").map((item) => item.trim());
     if (editingBankSampah) {
@@ -100,7 +97,7 @@ export default function BankSampahPage() {
           <tr>
             <th scope="col" className="px-6 py-3">Nama Bank Sampah</th>
             <th scope="col" className="px-6 py-3">Lokasi</th>
-            <th scope="col" className="px-6 py-3">Actions</th>
+            <th scope="col" className="px-6 py-3">Aksi</th>
           </tr>
         </thead>
         <tbody>
@@ -128,35 +125,31 @@ export default function BankSampahPage() {
           ))
           : (
             <tr>
-              <td colSpan={4}>No data available</td>
+              <td colSpan={4}>Tidak ada data</td>
             </tr>
           )
         }
         </tbody>
       </table>
 
-      {/* Button to open the dialog for adding a new Bank Sampah */}
-      <button
+      <ButtonAdd
         onClick={() => {
           setNewBankSampah({ name: "", location: "", sampah: [] });
           setEditingBankSampah(null);
           setIsDialogOpen(true);
         }}
-        className="mt-6 px-6 py-2 text-white bg-blue-600 rounded hover:bg-blue-700"
       >
-        Add New Bank Sampah
-      </button>
+      </ButtonAdd>
 
-      {/* Dialog for creating or editing Bank Sampah */}
       {isDialogOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg w-96">
             <h3 className="text-xl font-semibold mb-4">
-              {editingBankSampah ? "Edit Bank Sampah" : "Add New Bank Sampah"}
+              {editingBankSampah ? "Edit " : "Tambah Bank Sampah"}
             </h3>
             <form onSubmit={editingBankSampah ? handleUpdate : handleCreate}>
               <div className="mb-4">
-                <label className="block text-gray-700">Bank Sampah Name</label>
+                <label className="block text-gray-700">Nama Bank Sampah</label>
                 <input
                   type="text"
                   value={editingBankSampah ? editingBankSampah.name : newBankSampah.name}
@@ -165,7 +158,7 @@ export default function BankSampahPage() {
                 />
               </div>
               <div className="mb-4">
-                <label className="block text-gray-700">Location</label>
+                <label className="block text-gray-700">Lokasi</label>
                 <input
                   type="text"
                   value={editingBankSampah ? editingBankSampah.location : newBankSampah.location}
@@ -173,27 +166,18 @@ export default function BankSampahPage() {
                   className="mt-1 px-4 py-2 border rounded"
                 />
               </div>
-              <div className="mb-4">
-                <label className="block text-gray-700">Sampah Items (comma separated)</label>
-                <input
-                  type="text"
-                  value={editingBankSampah ? editingBankSampah.sampah.join(", ") : newBankSampah.sampah.join(", ")}
-                  onChange={handleSampahChange}
-                  className="mt-1 px-4 py-2 border rounded"
-                />
-              </div>
               <button
                 type="submit"
-                className="px-6 py-2 text-white bg-blue-600 rounded hover:bg-blue-700"
+                className="px-6 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700"
               >
-                {editingBankSampah ? "Update Bank Sampah" : "Add Bank Sampah"}
+                {editingBankSampah ? "Perbarui" : "Tambah"}
               </button>
               <button
                 type="button"
                 onClick={() => setIsDialogOpen(false)}
-                className="ml-4 px-6 py-2 text-white bg-gray-600 rounded hover:bg-gray-700"
+                className="ml-4 px-6 py-2 text-white bg-red-600 rounded-lg hover:bg-red-800"
               >
-                Cancel
+                Batal
               </button>
             </form>
           </div>

@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key */
 import '../assets/css/historyPage.css'
 import HistorySharpIcon from '@mui/icons-material/HistorySharp';
 import ChevronLeftOutlinedIcon from '@mui/icons-material/ChevronLeftOutlined';

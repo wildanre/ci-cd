@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { ButtonAdd, ButtonEdit, ButtonDelete } from "../components/button";
+import axios from "axios";
 
 export default function TokoPage() {
   const [toko, setToko] = useState([]);
@@ -16,8 +17,34 @@ export default function TokoPage() {
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL}/toko`)
       .then((response) => response.json())
-      .then((data) => setToko(data));
+      .then((data) => setToko(data))
+      .catch((error) => console.error("Error fetching data:", error));
   }, []);
+
+  // Handle image upload
+  const handleImageUpload = async (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", "upload_barang");
+      formData.append("cloud_name", "dzev0az08");
+
+      try {
+        const response = await axios.post(
+          "https://api.cloudinary.com/v1_1/dzev0az08/image/upload/",
+          formData,
+          { headers: { "Content-Type": "multipart/form-data" } }
+        );
+        setNewStore((prevState) => ({
+          ...prevState,
+          imageUrl: response.data.secure_url,
+        }));
+      } catch (error) {
+        console.error("Error uploading image:", error);
+      }
+    }
+  };
 
   // Create new store
   const handleCreate = (e) => {
@@ -40,7 +67,8 @@ export default function TokoPage() {
           imageUrl: "",
         });
         setIsDialogOpen(false);
-      });
+      })
+      .catch((error) => console.error("Error creating store:", error));
   };
 
   // Update store
@@ -62,16 +90,19 @@ export default function TokoPage() {
         setToko(updatedStores);
         setEditingStore(null);
         setIsDialogOpen(false);
-      });
+      })
+      .catch((error) => console.error("Error updating store:", error));
   };
 
   // Delete store
   const handleDelete = (id) => {
     fetch(`${import.meta.env.VITE_API_URL}/toko/${id}`, {
       method: "DELETE",
-    }).then(() => {
-      setToko(toko.filter((store) => store.id !== id));
-    });
+    })
+      .then(() => {
+        setToko(toko.filter((store) => store.id !== id));
+      })
+      .catch((error) => console.error("Error deleting store:", error));
   };
 
   return (
@@ -79,31 +110,39 @@ export default function TokoPage() {
       <table className="w-full text-sm text-left rtl:text-right text-gray-500">
         <thead className="text-xs uppercase bg-gray-50">
           <tr>
-            <th scope="col" className="px-6 py-3">Store Name</th>
-            <th scope="col" className="px-6 py-3">Address</th>
-            <th scope="col" className="px-6 py-3">Items</th>
-            <th scope="col" className="px-6 py-3">Store Image</th>
-            <th scope="col" className="px-6 py-3">Actions</th>
+            <th scope="col" className="px-6 py-3">Nama Toko</th>
+            <th scope="col" className="px-6 py-3">Alamat</th>
+            <th scope="col" className="px-6 py-3">Data Barang</th>
+            <th scope="col" className="px-6 py-3">Gambar</th>
+            <th scope="col" className="px-6 py-3">Aksi</th>
           </tr>
         </thead>
         <tbody>
-          {toko.map((store) => (
+          {Array.isArray(toko) && toko.map((store) => (
             <tr className="odd:bg-white even:bg-gray-50 border-b" key={store.id}>
               <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                 {store.nama}
               </th>
               <td className="px-6 py-4">{store.alamat}</td>
               <td className="px-6 py-4">
-                {store.barang.map((barang, index) => (
-                  <div key={index}>{barang.nama}</div>
-                ))}
+                {Array.isArray(store.barang) ? (
+                  store.barang.map((barang, index) => (
+                    <div key={index}>{barang.nama}</div>
+                  ))
+                ) : (
+                  <span>No Items</span>
+                )}
               </td>
               <td className="px-6 py-4">
-                <img
-                  src={store.imageUrl}
-                  alt={store.nama}
-                  className="w-10 h-10 object-cover rounded-full"
-                />
+                {store.imageUrl ? (
+                  <img
+                    src={store.imageUrl}
+                    alt={store.nama}
+                    className="w-10 h-10 object-cover rounded-full"
+                  />
+                ) : (
+                  <span>No Image</span>
+                )}
               </td>
               <td className="px-6 py-4">
                 <ButtonEdit
@@ -111,19 +150,14 @@ export default function TokoPage() {
                     setEditingStore(store);
                     setIsDialogOpen(true);
                   }}
-                >
-                </ButtonEdit>
-                <button
-                  onClick={() => handleDelete(store.id)}
-                >
-                </button>
+                />
+                <ButtonDelete onClick={() => handleDelete(store.id)} />
               </td>
             </tr>
           ))}
         </tbody>
       </table>
 
-      {/* Button to open the dialog for adding a new store */}
       <ButtonAdd
         onClick={() => {
           setNewStore({
@@ -137,9 +171,9 @@ export default function TokoPage() {
         }}
         className="mt-6 px-6 py-2 text-white bg-blue-600 rounded hover:bg-blue-700"
       >
+        Add Store
       </ButtonAdd>
 
-      {/* Dialog for creating or editing store */}
       {isDialogOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg w-96">
@@ -176,17 +210,10 @@ export default function TokoPage() {
                 />
               </div>
               <div className="mb-4">
-                <label className="block text-gray-700">Store Image URL</label>
+                <label className="block text-gray-700">Store Image</label>
                 <input
-                  type="text"
-                  value={editingStore ? editingStore.imageUrl : newStore.imageUrl}
-                  onChange={(e) => {
-                    if (editingStore) {
-                      setEditingStore({ ...editingStore, imageUrl: e.target.value });
-                    } else {
-                      setNewStore({ ...newStore, imageUrl: e.target.value });
-                    }
-                  }}
+                  type="file"
+                  onChange={handleImageUpload}
                   className="mt-1 px-4 py-2 border rounded"
                 />
               </div>

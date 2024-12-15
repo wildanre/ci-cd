@@ -1,6 +1,7 @@
+/* eslint-disable no-unused-vars */
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { ButtonDelete, ButtonCheck, ButtonCancel } from '../components/button';
+import { ButtonDelete, ButtonCheck, ButtonCancelled } from '../components/button';
 function PembayaranPage() {
   const [payments, setPayments] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -124,29 +125,21 @@ function PembayaranPage() {
                 <td className="px-6 py-4">{payment.user.name}</td>
                 <td className="px-6 py-4">{payment.barang.nama}</td>
                 <td className="px-6 py-4">{payment.status}</td>
-                <td className="px-6 py-4">
+                <td className="px-6 py-4 flex flex-start gap-2">
                   {payment.status !== 'cancelled' && payment.status !== 'success' && (
-                    <div className="flex space-x-4 mb-2">
+                    <div>
                       <ButtonCheck
-                        onClick={() => handleStatusUpdate(payment.id, 'success', payment.totalPrice)}
-                        className="text-blue-600 hover:underline"
                       >
-                        Mark as Success
                       </ButtonCheck>
-                      <ButtonCancel
-                        onClick={() => handleStatusUpdate(payment.id, 'cancelled', payment.totalPrice)}
-                        className="text-red-600 hover:underline"
+                      <ButtonCancelled
                       >
-                        Mark as Cancelled
-                      </ButtonCancel>
+                      </ButtonCancelled>
                     </div>
 
                   )}
                   <ButtonDelete
                     onClick={() => handleDeletePayment(payment.id)}
-                    className="text-red-600 hover:underline ml-4"
                   >
-                    Hapus
                   </ButtonDelete>
                 </td>
               </tr>

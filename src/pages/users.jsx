@@ -87,7 +87,6 @@ export default function UserPage() {
 
   return (
     <div className='mx-2'>
-      <ButtonAdd onClick={() => openDialog()} />
       <TableUsers users={users} onEdit={openDialog} onDelete={handleDelete} />
       {isDialogOpen && (
         <div className='fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50'>

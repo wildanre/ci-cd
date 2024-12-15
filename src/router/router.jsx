@@ -1,8 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom'
 import HomePage from '../pages/home'
 import Navbar from '../components/navBar'
-import LoginPage from '../pages/loginPage'
-import RegisterPage from '../pages/registerPage'
 import HistoryPage from '../pages/history'
 import TokoPage from '../pages/toko'
 import BarangPage from '../pages/barang'
@@ -58,14 +56,6 @@ const router = createBrowserRouter([
                 element: <PembayaranPage />
             },
         ]
-    },
-    {
-        path: '/login',
-        element: <LoginPage />,
-    },
-    {
-        path: '/register',
-        element: <RegisterPage />,
     },
 ])
 
