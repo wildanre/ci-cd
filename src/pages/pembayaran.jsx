@@ -1,6 +1,6 @@
-/* eslint-disable no-unused-vars */
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { format } from 'date-fns';
 import { ButtonDelete, ButtonCheck, ButtonCancelled } from '../components/button';
 function PembayaranPage() {
   const [payments, setPayments] = useState([]);
@@ -112,6 +112,8 @@ function PembayaranPage() {
             <th scope="col" className="px-6 py-3">User</th>
             <th scope="col" className="px-6 py-3">barang</th>
             <th scope="col" className="px-6 py-3">Status</th>
+            <th scope="col" className="px-6 py-3">Dibuat</th>
+            <th scope="col" className="px-6 py-3">Diubah</th>
             <th scope="col" className="px-6 py-3">Aksi</th>
           </tr>
         </thead>
@@ -125,21 +127,31 @@ function PembayaranPage() {
                 <td className="px-6 py-4">{payment.user.name}</td>
                 <td className="px-6 py-4">{payment.barang.nama}</td>
                 <td className="px-6 py-4">{payment.status}</td>
-                <td className="px-6 py-4 flex flex-start gap-2">
+                <td className="px-6 py-4">{format(new Date(payment.createdAt), 'yyyy-MM-dd HH:mm')}</td>
+                <td className="px-6 py-4">{format(new Date(payment.updatedAt), 'yyyy-MM-dd HH:mm')}</td>
+                <td className="px-6 py-4">
                   {payment.status !== 'cancelled' && payment.status !== 'success' && (
-                    <div>
+                    <div className="flex space-x-4 mb-2">
                       <ButtonCheck
+                        onClick={() => handleStatusUpdate(payment.id, 'success', payment.totalPrice)}
+                        className="text-blue-600 hover:underline"
                       >
+                        Mark as Success
                       </ButtonCheck>
                       <ButtonCancelled
+                        onClick={() => handleStatusUpdate(payment.id, 'cancelled', payment.totalPrice)}
+                        className="text-red-600 hover:underline"
                       >
+                        Mark as Cancelled
                       </ButtonCancelled>
                     </div>
 
                   )}
                   <ButtonDelete
                     onClick={() => handleDeletePayment(payment.id)}
+                    className="text-red-600 hover:underline ml-4"
                   >
+                    Hapus
                   </ButtonDelete>
                 </td>
               </tr>

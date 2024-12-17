@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import TableUsers from '../components/TableUsers';
 import UserForm from '../components/UserForm';
-import { ButtonAdd } from '../components/button';
 
 export default function UserPage() {
   const [users, setUsers] = useState([]);

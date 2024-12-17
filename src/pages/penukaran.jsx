@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
+import { format } from 'date-fns';
 import { ButtonCheck, ButtonCancelled, ButtonDelete } from '../components/button'
 
 const Penukaran = () => {
@@ -125,6 +126,8 @@ const Penukaran = () => {
             <th scope="col" className="px-6 py-3">Kategori</th>
             <th scope="col" className="px-6 py-3">Bank Sampah</th>
             <th scope="col" className="px-6 py-3">Status</th>
+            <th scope="col" className="px-6 py-3">Dibuat</th>
+            <th scope="col" className="px-6 py-3">Diubah</th>
             <th scope="col" className="px-6 py-3">Aksi</th>
           </tr>
         </thead>
@@ -135,6 +138,8 @@ const Penukaran = () => {
               <td className="px-6 py-4">{penukaran.category?.category || '-'}</td>
               <td className="px-6 py-4">{penukaran.bankSampah?.name || '-'}</td>
               <td className="px-6 py-4">{penukaran.status}</td>
+              <td className="px-6 py-4">{format(new Date(penukaran.dateCreated), 'yyyy-MM-dd HH:mm')}</td>
+              <td className="px-6 py-4">{format(new Date(penukaran.dateUpdated), 'yyyy-MM-dd HH:mm')}</td>
               <td className="px-6 py-4 flex flex-start gap-2">
                 {penukaran.status === 'pending' && (
                   <>
