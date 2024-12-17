@@ -36,8 +36,7 @@ const Penukaran = () => {
     e.preventDefault();
     if (!newStatus) return;
 
-    // Ensure 'earned' is valid or provide a default value
-    const earnedValue = penukaran?.earned || 0; // Default to 0 if 'earned' is not available
+    const earnedValue = penukaran?.earned || 0; 
 
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/penukaran/${penukaran.id}`, {
@@ -123,8 +122,9 @@ const Penukaran = () => {
         <thead className="text-xs uppercase bg-gray-50">
           <tr>
             <th scope="col" className="px-6 py-3">Nama</th>
-            <th scope="col" className="px-6 py-3">Kategori</th>
             <th scope="col" className="px-6 py-3">Bank Sampah</th>
+            <th scope="col" className="px-6 py-3">Kategori</th>
+            <th scope="col" className="px-6 py-3">Pendapatan</th>
             <th scope="col" className="px-6 py-3">Status</th>
             <th scope="col" className="px-6 py-3">Dibuat</th>
             <th scope="col" className="px-6 py-3">Diubah</th>
@@ -135,8 +135,9 @@ const Penukaran = () => {
           {penukarans.map((penukaran) => (
             <tr key={penukaran.id} className="odd:bg-white even:bg-gray-50 border-b">
               <td className="px-6 py-4">{penukaran.name?.name || '-'}</td>
-              <td className="px-6 py-4">{penukaran.category?.category || '-'}</td>
               <td className="px-6 py-4">{penukaran.bankSampah?.name || '-'}</td>
+              <td className="px-6 py-4">{penukaran.category?.category || '-'}</td>
+              <td className="px-6 py-4">{penukaran.earned|| '-'}</td>
               <td className="px-6 py-4">{penukaran.status}</td>
               <td className="px-6 py-4">{format(new Date(penukaran.dateCreated), 'yyyy-MM-dd HH:mm')}</td>
               <td className="px-6 py-4">{format(new Date(penukaran.dateUpdated), 'yyyy-MM-dd HH:mm')}</td>

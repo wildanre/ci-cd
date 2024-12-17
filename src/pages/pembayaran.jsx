@@ -48,10 +48,10 @@ function PembayaranPage() {
       } catch (error) {
         console.error('Error updating status:', error);
       }
-      return; // Menghentikan proses lebih lanjut untuk mengurangi poin jika status adalah cancelled
+      return;
     }
 
-    // Lakukan update status dan kurangi poin jika statusnya bukan cancelled
+    //  update status dan kurangi poin jika statusnya bukan cancelled
     try {
       const response = await axios.put(`${import.meta.env.VITE_API_URL}/payment/${id}`, {
         status: newStatus,
@@ -61,7 +61,7 @@ function PembayaranPage() {
       if (newStatus === 'success') {
         const user = response.data.payment.user;
         if (user && user.point !== undefined) {
-          // Hanya kurangi poin jika statusnya 'success'
+          //  kurangi poin jika 'success'
           await axios.put(`${import.meta.env.VITE_API_URL}/user/${user.id}`, {
             point: user.point - totalPrice,
           });
@@ -81,7 +81,7 @@ function PembayaranPage() {
     }
   };
 
-  // Tambahkan fungsi untuk menghapus pembayaran
+  // menghapus pembayaran
   const handleDeletePayment = async (id) => {
     if (!window.confirm('Apakah Anda yakin ingin menghapus pembayaran ini?')) {
       return;
@@ -108,9 +108,9 @@ function PembayaranPage() {
       <table className="w-full text-sm text-left text-gray-500">
         <thead className="text-xs uppercase bg-gray-50 text-gray-700">
           <tr>
-            <th scope="col" className="px-6 py-3">Total harga</th>
-            <th scope="col" className="px-6 py-3">User</th>
+            <th scope="col" className="px-6 py-3">Nama</th>
             <th scope="col" className="px-6 py-3">barang</th>
+            <th scope="col" className="px-6 py-3">Total harga</th>
             <th scope="col" className="px-6 py-3">Status</th>
             <th scope="col" className="px-6 py-3">Dibuat</th>
             <th scope="col" className="px-6 py-3">Diubah</th>
@@ -121,11 +121,11 @@ function PembayaranPage() {
           {Array.isArray(payments) && payments.length > 0 ? (
             payments.map((payment) => (
               <tr className="odd:bg-white even:bg-gray-50 border-b" key={payment.id}>
+                <td className="px-6 py-4">{payment.user.name}</td>
+                <td className="px-6 py-4">{payment.barang.nama}</td>
                 <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                   {payment.totalPrice}
                 </td>
-                <td className="px-6 py-4">{payment.user.name}</td>
-                <td className="px-6 py-4">{payment.barang.nama}</td>
                 <td className="px-6 py-4">{payment.status}</td>
                 <td className="px-6 py-4">{format(new Date(payment.createdAt), 'yyyy-MM-dd HH:mm')}</td>
                 <td className="px-6 py-4">{format(new Date(payment.updatedAt), 'yyyy-MM-dd HH:mm')}</td>
@@ -134,13 +134,11 @@ function PembayaranPage() {
                     <div className="flex space-x-4 mb-2">
                       <ButtonCheck
                         onClick={() => handleStatusUpdate(payment.id, 'success', payment.totalPrice)}
-                        className="text-blue-600 hover:underline"
                       >
                         Mark as Success
                       </ButtonCheck>
                       <ButtonCancelled
                         onClick={() => handleStatusUpdate(payment.id, 'cancelled', payment.totalPrice)}
-                        className="text-red-600 hover:underline"
                       >
                         Mark as Cancelled
                       </ButtonCancelled>
