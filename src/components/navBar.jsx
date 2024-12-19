@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import '../assets/css/navigation.css';
 import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
@@ -13,9 +14,8 @@ import ReportIcon from '@mui/icons-material/Report';
 import SwapHorizontalCircleIcon from '@mui/icons-material/SwapHorizontalCircle';
 import PaymentsIcon from '@mui/icons-material/Payments';
 import { useState, useEffect } from 'react';
-import SettingsIcon from '@mui/icons-material/Settings';
-import PersonIcon from '@mui/icons-material/Person';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import Swal from 'sweetalert2';
 
 export default function Navbar() {
     const [active, setActive] = useState(0);
@@ -28,6 +28,35 @@ export default function Navbar() {
 
     const routes = ['/', '/toko', '/barang', '/users', '/bankSampah', '/sampah', '/pelaporan', '/penukaran', '/pembayaran'];
 
+    function logout() {
+        Swal.fire({
+            title: 'Anda yakin ingin keluar?',
+            text: 'Semua sesi Anda akan diakhiri.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, keluar!',
+            cancelButtonText: 'Batal',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                sessionStorage.removeItem('authToken');
+                sessionStorage.removeItem('user');
+
+                Swal.fire({
+                    title: 'Logout Berhasil!',
+                    text: 'Anda telah keluar dari akun.',
+                    icon: 'success',
+                    timer: 2000,
+                    showConfirmButton: false,
+                });
+
+                setTimeout(() => {
+                    navigate('/login');
+                }, 2000);
+            }
+        });
+    }
     function handleButton(i, route) {
         setActive(i);
         setAvtiveMobNav(!activeMobNav);
@@ -39,10 +68,6 @@ export default function Navbar() {
         setAvtiveMobNav(!activeMobNav);
     }
 
-    function logout() {
-        navigate('/login');
-    }
-
     useEffect(() => {
         const handleResize = () => {
             const isMobileDevice = window.innerWidth <= 768;
@@ -50,14 +75,14 @@ export default function Navbar() {
         };
         handleResize();
 
-        // Set active based on current location pathname
+
         setActive(routes.indexOf(location.pathname));
 
         window.addEventListener('resize', handleResize);
         return () => {
             window.removeEventListener('resize', handleResize);
         };
-    }, [location.pathname]); // Depend on location.pathname so it updates on navigation
+    }, [location.pathname]);
 
     return (
         <>
@@ -107,16 +132,17 @@ export default function Navbar() {
                             <button className='menu' onClick={() => { setAvtiveMobTopNav(!activeMobTopNav) }}><MoreVertIcon /></button>
                         ) : (
                             <>
-                                <button className='menu'><PersonIcon /></button>
-                                <button className='menu'> <SettingsIcon /></button>
-                                <button className='menu' onClick={logout}><LogoutSharpIcon /></button>
+                                <button className='menu' onClick={logout}>
+                                    <LogoutSharpIcon />
+                                </button>
+
                             </>
                         )}
                     </div>
                     {(isMobile && activeMobTopNav) && <div className='popOut-setting'>
-                        <button className='menu'><PersonIcon /> &nbsp;Account</button>
-                        <button className='menu'> <SettingsIcon /> &nbsp;Setting</button>
-                        <button className='menu' onClick={logout}><LogoutSharpIcon /> &nbsp;Logout</button>
+                        <button className='menu' onClick={logout}>
+                            <LogoutSharpIcon /> &nbsp;Logout
+                        </button>
                     </div>}
                 </div>
                 <Outlet />

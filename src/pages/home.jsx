@@ -6,11 +6,11 @@ export default function HomePage() {
 
     const barChart = {
         title: {
-            text: 'Sample Bar Chart',
+            text: 'Data Penjualan',
         },
         tooltip: {},
         xAxis: {
-            data: ['Category 1', 'Category 2', 'Category 3', 'Category 4', 'Category 5'],
+            data: ['Beras 1kg', 'Gula pasir 1kg', 'Gula Merah 250g', 'Tepung Terigu 1kg', 'Tepung Tapioka 1kg'],
         },
         yAxis: {},
         series: [
@@ -24,7 +24,7 @@ export default function HomePage() {
 
     const pieChart = {
         title: {
-            text: 'Sample Bar Chart',
+            text: 'Data Pelaporan',
         },
         tooltip: {
             trigger: 'item',
@@ -35,11 +35,11 @@ export default function HomePage() {
                 name: 'Sample Data',
                 type: 'pie',
                 data: [
-                    { value: 20, name: 'Category 1' },
-                    { value: 50, name: 'Category 2' },
-                    { value: 36, name: 'Category 3' },
-                    { value: 70, name: 'Category 4' },
-                    { value: 30, name: 'Category 5' },
+                    { value: 20, name: 'Terkirim' },
+                    { value: 50, name: 'Diproses' },
+                    { value: 36, name: 'Selesai' },
+                    { value: 30, name: 'Ditolak' },
+                    { value: 70, name: 'Semua Laporan' },
                 ],
                 radius: '55%',
                 center: ['50%', '50%'],
@@ -59,15 +59,15 @@ export default function HomePage() {
             <div className="card-container">
                 <div className='card-box hover-card'>
                     <span><ShoppingCartOutlinedIcon /></span>
-                    <p>ABCs</p>
-                    <p>2023</p>
-                    <p><b>3 new</b> Since last visit</p>
+                    <p>Savior</p>
+                    <p>2024</p>
+                    <p><b>100 User</b> Sejak terakhir dikunjungi</p>
                 </div>
                 <div className='card-box hover-card'>
                     <span><ShoppingCartOutlinedIcon /></span>
-                    <p>ABCs</p>
-                    <p>2023</p>
-                    <p><b>3 new</b> Since last visit</p>
+                    <p>Toko</p>
+                    <p>2024</p>
+                    <p><b>2 Toko</b> Sejak dibuat</p>
                 </div>
             </div>
 

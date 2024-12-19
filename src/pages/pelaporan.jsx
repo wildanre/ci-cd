@@ -1,15 +1,17 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import  { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
+import Swal from 'sweetalert2';
+import { ButtonDelete } from '../components/button';
 
 function Pelaporan() {
     const [pelaporanData, setPelaporanData] = useState([]);
     const [filterStatus, setFilterStatus] = useState('');
     const [sortOrder, setSortOrder] = useState('desc');
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 6;
+    const [selectedCard, setSelectedCard] = useState(null);
+    const itemsPerPage = 4;
 
-    // Ambil data dari sessionStorage jika ada
     useEffect(() => {
         fetchPelaporan();
     }, [filterStatus, sortOrder]);
@@ -29,8 +31,6 @@ function Pelaporan() {
                 return sortOrder === 'desc' ? dateB - dateA : dateA - dateB;
             });
 
-            // Simpan ke sessionStorage
-            sessionStorage.setItem('pelaporanData', JSON.stringify(data));
             setPelaporanData(data);
         } catch (error) {
             console.error('Failed to fetch pelaporan:', error);
@@ -40,22 +40,53 @@ function Pelaporan() {
     const handleStatusChange = async (id, newStatus) => {
         try {
             await axios.put(`${import.meta.env.VITE_API_URL}/pelaporan/${id}`, { status: newStatus });
-            alert('Status updated successfully.');
+            Swal.fire({
+                icon: 'success',
+                title: 'Status updated!',
+                text: 'The status has been updated successfully.',
+            });
             fetchPelaporan();
         } catch (error) {
-            alert('Failed to update status.');
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'Failed to update status. Please try again.',
+            });
             console.error('Failed to update status:', error);
         }
     };
 
     const handleDelete = async (id) => {
-        try {
-            await axios.delete(`${import.meta.env.VITE_API_URL}/pelaporan/${id}`);
-            alert('Pelaporan deleted successfully.');
-            fetchPelaporan();
-        } catch (error) {
-            console.error('Failed to delete pelaporan:', error);
-            alert('Failed to delete pelaporan. Please try again.');
+        // Show confirmation popup before deleting
+        const result = await Swal.fire({
+            title: 'Are you sure?',
+            text: 'This action cannot be undone.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel',
+            reverseButtons: true,
+        });
+
+        if (result.isConfirmed) {
+            try {
+                await axios.delete(`${import.meta.env.VITE_API_URL}/pelaporan/${id}`);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Deleted!',
+                    text: 'The pelaporan has been deleted successfully.',
+                });
+                fetchPelaporan();
+                // Close the modal after deletion
+                setSelectedCard(null);
+            } catch (error) {
+                console.error('Failed to delete pelaporan:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Failed to delete pelaporan. Please try again.',
+                });
+            }
         }
     };
 
@@ -81,6 +112,14 @@ function Pelaporan() {
 
     const totalPages = Math.ceil(pelaporanData.length / itemsPerPage);
 
+    const closeModal = () => setSelectedCard(null);
+
+    const handleOutsideClick = (e) => {
+        if (e.target.classList.contains('modal-overlay')) {
+            closeModal();
+        }
+    };
+
     return (
         <div className="container mx-auto">
             <h1 className="text-2xl font-bold mb-4">Pelaporan</h1>
@@ -91,7 +130,6 @@ function Pelaporan() {
                     value={filterStatus}
                     onChange={(e) => {
                         setFilterStatus(e.target.value);
-                        sessionStorage.removeItem('pelaporanData');
                     }}
                     className="border rounded px-2 py-1"
                 >
@@ -106,26 +144,28 @@ function Pelaporan() {
                     value={sortOrder}
                     onChange={(e) => {
                         setSortOrder(e.target.value);
-                        sessionStorage.removeItem('pelaporanData');
                     }}
                     className="border rounded px-2 py-1"
                 >
-                    <option value="desc">Newest First</option>
-                    <option value="asc">Oldest First</option>
+                    <option value="desc">Terbaru</option>
+                    <option value="asc">Terlama</option>
                 </select>
             </div>
 
             {/* Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {paginateData().map((item) => (
                     <div
                         key={item.id}
-                        className={`border rounded p-4 shadow ${getStatusBgColor(item.status)}`}
+                        className={`border rounded-xl p-4 shadow ${getStatusBgColor(item.status)} ${
+                            selectedCard === item.id ? 'scale-105' : 'scale-95'
+                        } transition-transform duration-300 transform`}
+                        onClick={() => setSelectedCard(item.id)} // Open modal by setting selected card
                     >
                         <h2 className="text-lg font-bold">{item.judul}</h2>
-                        
+                        <p className='text-sm font-bold'>{item.name?.name}</p>
                         <p>{item.address}</p>
-                        <p>{item.description}</p>
+                        <p className='bg-zinc-100 m-auto text-center w-1/2 rounded-lg'>{item.status}</p>
                         <img
                             src={item.imageUrl}
                             alt={item.judul}
@@ -134,26 +174,6 @@ function Pelaporan() {
                         <p className="text-sm text-gray-500">
                             {new Date(item.dateCreated).toLocaleString()}
                         </p>
-
-                        <div className="mt-2">
-                            <select
-                                value={item.status}
-                                onChange={(e) => handleStatusChange(item.id, e.target.value)}
-                                className="border rounded px-2 py-1"
-                            >
-                                <option value="sent">Sent</option>
-                                <option value="reviewed">Reviewed</option>
-                                <option value="completed">Completed</option>
-                                <option value="rejected">Rejected</option>
-                            </select>
-                        </div>
-
-                        <button
-                            onClick={() => handleDelete(item.id)}
-                            className="bg-red-500 text-white px-4 py-2 rounded mt-2"
-                        >
-                            Delete
-                        </button>
                     </div>
                 ))}
             </div>
@@ -180,6 +200,65 @@ function Pelaporan() {
                     Next &gt;
                 </button>
             </div>
+
+            {/* Modal */}
+            {selectedCard && (
+                <div
+                    className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50 modal-overlay"
+                    onClick={handleOutsideClick} // Close modal when clicking outside
+                >
+                    <div className="bg-white p-8 rounded shadow-lg max-w-lg w-full relative">
+                        {/* Close Button */}
+                        <button
+                            onClick={closeModal}
+                            className="absolute top-10 right-2 text-gray-100 bg-blue-400 p-2 rounded-lg hover:bg-blue-600"
+                        >
+                            Close
+                        </button>
+                        {/* Delete Button */}
+                        <ButtonDelete
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                handleDelete(selectedCard);
+                            }}
+                        >
+                        </ButtonDelete>
+
+                        {/* Modal Content */}
+                        {pelaporanData
+                            .filter((item) => item.id === selectedCard)
+                            .map((item) => (
+                                <div key={item.id}>
+                                    <h2 className="text-2xl font-bold mb-4">{item.judul}</h2>
+                                    <p className="text-lg mb-4">{item.description}</p>
+                                    <p className="mb-4">Address: {item.address}</p>
+                                    <img
+                                        src={item.imageUrl}
+                                        alt={item.judul}
+                                        className="w-full h-64 object-cover mb-4"
+                                    />
+                                    <p className="text-sm text-gray-500">
+                                        {new Date(item.dateCreated).toLocaleString()}
+                                    </p>
+
+                                    {/* Status Update */}
+                                    <div className="mt-4">
+                                        <select
+                                            value={item.status}
+                                            onChange={(e) => handleStatusChange(item.id, e.target.value)}
+                                            className="border rounded px-2 py-1"
+                                        >
+                                            <option value="sent">Sent</option>
+                                            <option value="reviewed">Reviewed</option>
+                                            <option value="completed">Completed</option>
+                                            <option value="rejected">Rejected</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            ))}
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

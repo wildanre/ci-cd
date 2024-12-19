@@ -3,6 +3,7 @@
 }
 
 .sideNav-mobile {
+    position: fixed;
     transition: 0.5s all ease;
     height: 100vh;
     background-color: #10c82b;
@@ -17,6 +18,8 @@
 .sideNav {
     transition: 0.5s all ease;
     height: 100vh;
+    top:0;
+    left: 0;
     background-color: #07b440;
     padding-top: 10px;
     padding-left: 10px;
@@ -148,7 +151,7 @@
 
 .menu {
     cursor: pointer;
-    color: rgb(124, 124, 124);
+    color: rgb(233, 0, 0);
     background: none;
     border: 2px solid white;
     padding: 4px;
@@ -159,8 +162,8 @@
 }
 
 .menu:hover {
-    color: rgb(74, 74, 74);
-    background-color: rgb(237, 237, 237);
+    color: rgb(148, 1, 1);
+    background-color: rgb(255, 255, 255);
 }
 
 .menu:active {
