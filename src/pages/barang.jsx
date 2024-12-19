@@ -339,7 +339,7 @@ export default function BarangPage() {
                 </select>
               </div>
               <div className='mb-4'>
-                <label className='block text-gray-700'>Upload Gambar</label>
+                <label className='block text-gray-700'>Upload Gambar, tunggu 10 detik</label>
                 <input
                   type='file'
                   onChange={handleImageUpload}

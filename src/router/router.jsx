@@ -1,62 +1,104 @@
-import { createBrowserRouter } from 'react-router-dom'
-import HomePage from '../pages/home'
-import Navbar from '../components/navBar'
-import HistoryPage from '../pages/history'
-import TokoPage from '../pages/toko'
-import BarangPage from '../pages/barang'
-import UserPage from '../pages/users'
-import BankSampahPage from '../pages/bankSampah'
-import SampahPage from '../pages/sampah'
-import Pelaporan from '../pages/pelaporan'
-import PenukaranPage from '../pages/penukaran'
-import PembayaranPage from '../pages/pembayaran'
+import { createBrowserRouter } from 'react-router-dom';
+import HomePage from '../pages/home';
+import Navbar from '../components/navBar';
+import HistoryPage from '../pages/history';
+import TokoPage from '../pages/toko';
+import BarangPage from '../pages/barang';
+import UserPage from '../pages/users';
+import BankSampahPage from '../pages/bankSampah';
+import SampahPage from '../pages/sampah';
+import Pelaporan from '../pages/pelaporan';
+import PenukaranPage from '../pages/penukaran';
+import PembayaranPage from '../pages/pembayaran';
+import Login from '../pages/auth/Login';
+import ProtectedRoute from '../components/ProtectedRoute';
 
 const router = createBrowserRouter([
+    {
+        path: "/login",
+        element: <Login />,
+    },
     {
         element: <Navbar />,
         children: [
             {
                 path: "/",
-                element: <HomePage />
+                element: <HomePage />,
             },
             {
                 path: "/toko",
-                element: <TokoPage />
+                element: (
+                    <ProtectedRoute>
+                        <TokoPage />
+                    </ProtectedRoute>
+                ),
             },
             {
                 path: "/barang",
-                element: <BarangPage />
+                element: (
+                    <ProtectedRoute role="admin">
+                        <BarangPage />
+                    </ProtectedRoute>
+                ),
             },
             {
                 path: "/users",
-                element: <UserPage />
+                element: (
+                    <ProtectedRoute role="admin">
+                        <UserPage />
+                    </ProtectedRoute>
+                ),
             },
             {
                 path: "/bankSampah",
-                element: <BankSampahPage/>
+                element: (
+                    <ProtectedRoute>
+                        <BankSampahPage />
+                    </ProtectedRoute>
+                ),
             },
             {
                 path: "/sampah",
-                element: <SampahPage />
+                element: (
+                    <ProtectedRoute>
+                        <SampahPage />
+                    </ProtectedRoute>
+                ),
             },
             {
                 path: "/history",
-                element: <HistoryPage />
+                element: (
+                    <ProtectedRoute>
+                        <HistoryPage />
+                    </ProtectedRoute>
+                ),
             },
             {
                 path: "/pelaporan",
-                element: <Pelaporan />
+                element: (
+                    <ProtectedRoute>
+                        <Pelaporan />
+                    </ProtectedRoute>
+                ),
             },
             {
                 path: "/penukaran",
-                element: <PenukaranPage />
+                element: (
+                    <ProtectedRoute>
+                        <PenukaranPage />
+                    </ProtectedRoute>
+                ),
             },
             {
                 path: "/pembayaran",
-                element: <PembayaranPage />
+                element: (
+                    <ProtectedRoute>
+                        <PembayaranPage />
+                    </ProtectedRoute>
+                ),
             },
-        ]
+        ],
     },
-])
+]);
 
-export default router
+export default router;

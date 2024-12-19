@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import  { useEffect, useState } from 'react';
 import axios from 'axios';
 
@@ -15,13 +16,6 @@ function Pelaporan() {
 
     const fetchPelaporan = async () => {
         try {
-            const cachedData = sessionStorage.getItem('pelaporanData');
-            if (cachedData) {
-                const parsedData = JSON.parse(cachedData);
-                setPelaporanData(parsedData);
-                return;
-            }
-
             const response = await axios.get(`${import.meta.env.VITE_API_URL}/pelaporan`);
             let data = response.data;
 

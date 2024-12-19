@@ -10,7 +10,7 @@ export default function SampahPage() {
   });
   const [editingSampah, setEditingSampah] = useState(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [bankSampah, setBankSampah] = useState([]); // State untuk data Bank Sampah
+  const [bankSampah, setBankSampah] = useState([]);
 
   // Fetch sampah from the API
   useEffect(() => {
@@ -19,11 +19,11 @@ export default function SampahPage() {
       .then((data) => setSampah(data));
   }, []);
 
-  // Fetch bank sampah from the API
+
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL}/bank-sampah`)
       .then((response) => response.json())
-      .then((data) => setBankSampah(data)); // Menyimpan data bank sampah
+      .then((data) => setBankSampah(data));
   }, []);
 
   // Create new sampah
@@ -49,7 +49,6 @@ export default function SampahPage() {
       });
   };
 
-  // Update sampah
   const handleUpdate = (e) => {
     e.preventDefault();
 
@@ -88,7 +87,7 @@ export default function SampahPage() {
             <th scope="col" className="px-6 py-3">Kategori</th>
             <th scope="col" className="px-6 py-3">harga</th>
             <th scope="col" className="px-6 py-3">Bank Sampah</th>
-            <th scope="col" className="px-6 py-3">Actions</th>
+            <th scope="col" className="px-6 py-3">Aksi</th>
           </tr>
         </thead>
         <tbody>
@@ -98,7 +97,9 @@ export default function SampahPage() {
                 {item.category}
               </th>
               <td className="px-6 py-4">{item.price}</td>
-              <td className="px-6 py-4">{item.bankSampah.name}</td>
+              <td className="px-6 py-4">
+                {item.bankSampah ? item.bankSampah.name : ""}
+              </td>
               <td className="px-6 py-4 flex flex-row gap-2">
                 <ButtonEdit
                   onClick={() => {
@@ -113,9 +114,9 @@ export default function SampahPage() {
             </tr>
           ))}
         </tbody>
+
       </table>
 
-      {/* Button to open the dialog for adding a new sampah */}
       <ButtonAdd
         onClick={() => {
           setNewSampah({
@@ -128,7 +129,7 @@ export default function SampahPage() {
         }}
         className="mt-6 px-6 py-2 text-white bg-blue-600 rounded hover:bg-blue-700"
       >
-        
+
       </ButtonAdd>
 
       {/* Dialog for creating or editing sampah */}
@@ -136,11 +137,11 @@ export default function SampahPage() {
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg w-96">
             <h3 className="text-xl font-semibold mb-4">
-              {editingSampah ? "Edit Sampah" : "Add New Sampah"}
+              {editingSampah ? "Edit Sampah" : "Tambah Sampah"}
             </h3>
             <form onSubmit={editingSampah ? handleUpdate : handleCreate}>
               <div className="mb-4">
-                <label className="block text-gray-700">Category</label>
+                <label className="block text-gray-700">Kategori</label>
                 <input
                   type="text"
                   value={editingSampah ? editingSampah.category : newSampah.category}
@@ -155,7 +156,7 @@ export default function SampahPage() {
                 />
               </div>
               <div className="mb-4">
-                <label className="block text-gray-700">Price</label>
+                <label className="block text-gray-700">Harga</label>
                 <input
                   type="number"
                   value={editingSampah ? editingSampah.price : newSampah.price}
