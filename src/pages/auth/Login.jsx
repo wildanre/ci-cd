@@ -39,13 +39,13 @@ const Login = () => {
             return () => clearInterval(intervalId);
         }
     }, [user]); 
-
+    const apiUrl = import.meta.env.VITE_API_URL;  // Pastikan ini sudah didefinisikan dengan benar
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
 
         try {
-            const response = await axios.post(`${import.meta.env.VITE_API_URL}/login`, {
+            const response = await axios.post(`${apiUrl}/login`, {
                 email,
                 password,
             });
