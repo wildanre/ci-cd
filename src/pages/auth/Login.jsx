@@ -59,7 +59,7 @@ const Login = () => {
             icon: 'success',
             confirmButtonText: 'OK',
           });
-          setTimeout(() => navigate('/admin-dashboard'), 2000);
+          setTimeout(() => navigate('/'), 2000);
         } else {
           Swal.fire({
             title: 'Hanya Admin yang Bisa Login!',
