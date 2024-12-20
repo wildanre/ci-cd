@@ -10,6 +10,7 @@ const TableUsers = ({ users, onEdit, onDelete }) => (
           <th scope="col" className="px-6 py-3">Nama</th>
           <th scope="col" className="px-6 py-3">Email</th>
           <th scope="col" className="px-6 py-3">Role</th>
+          <th scope="col" className="px-6 py-3">point</th>
           <th scope="col" className="px-6 py-3">Nomor Telepon</th>
           <th scope="col" className="px-6 py-3">Dibuat</th>
           <th scope="col" className="px-6 py-3">Diperbarui</th>
@@ -24,6 +25,7 @@ const TableUsers = ({ users, onEdit, onDelete }) => (
             </th>
             <td className="px-6 py-4">{user.email}</td>
             <td className="px-6 py-4">{user.role}</td>
+            <td className="px-6 py-4">{user.point}</td>
             <td className="px-6 py-4">{user.phoneNumber}</td>
             <td className="px-6 py-4">{format(new Date(user.createdAt), 'yyyy-MM-dd HH:mm')}</td>
             <td className="px-6 py-4">{format(new Date(user.updatedAt), 'yyyy-MM-dd HH:mm')}</td>

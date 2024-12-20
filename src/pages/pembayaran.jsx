@@ -110,10 +110,10 @@ function PembayaranPage() {
         <thead className="text-xs uppercase bg-gray-50 text-gray-700">
           <tr>
             <th scope="col" className="px-6 py-3">Nama</th>
+            <th scope="col" className="px-6 py-3">Poin</th>
             <th scope="col" className="px-6 py-3">barang</th>
             <th scope="col" className="px-6 py-3">Total harga</th>
             <th scope="col" className="px-6 py-3">Status</th>
-            <th scope="col" className="px-6 py-3">Dibuat</th>
             <th scope="col" className="px-6 py-3">Diubah</th>
             <th scope="col" className="px-6 py-3">Aksi</th>
           </tr>
@@ -123,12 +123,12 @@ function PembayaranPage() {
             payments.map((payment) => (
               <tr className="odd:bg-white even:bg-gray-50 border-b" key={payment.id}>
                 <td className="px-6 py-4">{payment.user.name}</td>
+                <td className="px-6 py-4">{payment.user.point}</td>
                 <td className="px-6 py-4">{payment.barang.nama}</td>
                 <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                   {payment.totalPrice}
                 </td>
                 <td className="px-6 py-4">{payment.status}</td>
-                <td className="px-6 py-4">{format(new Date(payment.createdAt), 'yyyy-MM-dd HH:mm')}</td>
                 <td className="px-6 py-4">{format(new Date(payment.updatedAt), 'yyyy-MM-dd HH:mm')}</td>
                 <td className="px-6 py-4">
                   {payment.status !== 'cancelled' && payment.status !== 'success' && (
