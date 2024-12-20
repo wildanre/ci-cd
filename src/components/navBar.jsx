@@ -98,7 +98,7 @@ export default function Navbar() {
                                 <li className={active === 1 ? 'activeNav' : null} onClick={() => { handleButton(1, '/toko') }}><ShoppingBagIcon /> <p>&nbsp; Toko</p></li>
                                 <li className={active === 2 ? 'activeNav' : null} onClick={() => { handleButton(2, '/barang') }}><ArchiveIcon /> <p>&nbsp; Barang</p></li>
                                 <li className={active === 3 ? 'activeNav' : null} onClick={() => { handleButton(3, '/users') }}><AccountCircleIcon /> <p>&nbsp; Users</p></li>
-                                <li className={active === 4 ? 'activeNav' : null} onClick={() => { handleButton(4, '/bankSampah') }}><CollectionsBookmarkIcon /> {showDetail && <p>Bank Sampah</p>}</li>
+                                <li className={active === 4 ? 'activeNav' : null} onClick={() => { handleButton(4, '/bankSampah') }}><CollectionsBookmarkIcon /> <p>&nbsp; Bank Sampah</p></li>
                                 <li className={active === 5 ? 'activeNav' : null} onClick={() => { handleButton(5, '/sampah') }}><DeleteSweepIcon /> <p>&nbsp; Daftar Sampah</p></li>
                                 <li className={active === 6 ? 'activeNav' : null} onClick={() => { handleButton(6, '/pelaporan') }}><ReportIcon /> <p>&nbsp; Pelaporan</p></li>
                                 <li className={active === 7 ? 'activeNav' : null} onClick={() => { handleButton(7, '/penukaran') }}><SwapHorizontalCircleIcon /> <p>&nbsp; Penukaran</p></li>
