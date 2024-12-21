@@ -42,15 +42,15 @@ function Pelaporan() {
             await axios.put(`${import.meta.env.VITE_API_URL}/pelaporan/${id}`, { status: newStatus });
             Swal.fire({
                 icon: 'success',
-                title: 'Status updated!',
-                text: 'The status has been updated successfully.',
+                title: 'Status diperbarui!',
+                text: `Status diperbarui ke ${newStatus}.`,
             });
             fetchPelaporan();
         } catch (error) {
             Swal.fire({
                 icon: 'error',
-                title: 'Error!',
-                text: 'Failed to update status. Please try again.',
+                title: 'Gagal!',
+                text: 'Status gagal diperbarui',
             });
             console.error('Failed to update status:', error);
         }
@@ -59,12 +59,12 @@ function Pelaporan() {
     const handleDelete = async (id) => {
         // Show confirmation popup before deleting
         const result = await Swal.fire({
-            title: 'Are you sure?',
-            text: 'This action cannot be undone.',
+            title: 'apakah kamu yakin?',
+            text: 'Data akan dihapus dan tidak dapat dipulihkan',
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonText: 'Yes, delete it!',
-            cancelButtonText: 'Cancel',
+            confirmButtonText: 'Iya!',
+            cancelButtonText: 'Batal',
             reverseButtons: true,
         });
 
@@ -73,8 +73,8 @@ function Pelaporan() {
                 await axios.delete(`${import.meta.env.VITE_API_URL}/pelaporan/${id}`);
                 Swal.fire({
                     icon: 'success',
-                    title: 'Deleted!',
-                    text: 'The pelaporan has been deleted successfully.',
+                    title: 'Dihapus!',
+                    text: 'Laporan berhasil dihapus',
                 });
                 fetchPelaporan();
                 // Close the modal after deletion
@@ -83,8 +83,8 @@ function Pelaporan() {
                 console.error('Failed to delete pelaporan:', error);
                 Swal.fire({
                     icon: 'error',
-                    title: 'Error!',
-                    text: 'Failed to delete pelaporan. Please try again.',
+                    title: 'Gagal!',
+                    text: 'Gagal menghapus laporan',
                 });
             }
         }
@@ -160,7 +160,7 @@ function Pelaporan() {
                         className={`border rounded-xl p-4 shadow ${getStatusBgColor(item.status)} ${
                             selectedCard === item.id ? 'scale-105' : 'scale-95'
                         } transition-transform duration-300 transform`}
-                        onClick={() => setSelectedCard(item.id)} // Open modal by setting selected card
+                        onClick={() => setSelectedCard(item.id)} 
                     >
                         <h2 className="text-lg font-bold">{item.judul}</h2>
                         <p className='text-sm font-bold'>{item.name?.name}</p>
@@ -213,7 +213,7 @@ function Pelaporan() {
                             onClick={closeModal}
                             className="absolute top-10 right-2 text-gray-100 bg-blue-400 p-2 rounded-lg hover:bg-blue-600"
                         >
-                            Close
+                            Tutup
                         </button>
                         {/* Delete Button */}
                         <ButtonDelete
@@ -231,7 +231,7 @@ function Pelaporan() {
                                 <div key={item.id}>
                                     <h2 className="text-2xl font-bold mb-4">{item.judul}</h2>
                                     <p className="text-lg mb-4">{item.description}</p>
-                                    <p className="mb-4">Address: {item.address}</p>
+                                    <p className="mb-4">Lokasi: {item.address}</p>
                                     <img
                                         src={item.imageUrl}
                                         alt={item.judul}
