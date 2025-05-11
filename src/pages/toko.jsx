@@ -141,7 +141,7 @@ export default function TokoPage() {
                     className="w-10 h-10 object-cover rounded-full"
                   />
                 ) : (
-                  <span>No Image</span>
+                  <span>Tidak ada gambar</span>
                 )}
               </td>
               <td className="px-6 py-4">
@@ -180,7 +180,7 @@ export default function TokoPage() {
             <h3 className="text-xl font-semibold mb-4">{editingStore ? "Edit Store" : "Add New Store"}</h3>
             <form onSubmit={editingStore ? handleUpdate : handleCreate}>
               <div className="mb-4">
-                <label className="block text-gray-700">Store Name</label>
+                <label className="block text-gray-700">Nama Toko</label>
                 <input
                   type="text"
                   value={editingStore ? editingStore.nama : newStore.nama}
@@ -210,7 +210,7 @@ export default function TokoPage() {
                 />
               </div>
               <div className="mb-4">
-                <label className="block text-gray-700">Store Image</label>
+                <label className="block text-gray-700">Nama toko</label>
                 <input
                   type="file"
                   onChange={handleImageUpload}
