@@ -130,7 +130,7 @@ export default function TokoPage() {
                     <div key={index}>{barang.nama}</div>
                   ))
                 ) : (
-                  <span>No Items</span>
+                  <span>Tidak ada item</span>
                 )}
               </td>
               <td className="px-6 py-4">
