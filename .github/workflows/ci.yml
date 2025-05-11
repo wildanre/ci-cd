@@ -26,5 +26,8 @@ jobs:
 
     - name: Build project
       run: npm run build
-    - name: Run preview
-      run: npm run preview 
+
+    - name: Run preview in background
+      run: |
+        nohup npm run preview & 
+        sleep 10  
